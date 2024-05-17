@@ -1,15 +1,24 @@
-class NoteItem {
-  private note: Note;
-  content: string;
-  id: number;
-  title?: string;
-  date: Date;
-  constructor() {}
-}
+//NOTE İÇİN BASE CLASS
 class Note {
-  constructor(id: number = Math.random(), content: string, date: Date, title?: string) {}
+  constructor(public id: number, public content: string, public date: string, public title?: string) {}
 }
 
+//NOT EKLEYİCİ SINIF
+class NoteAdder {
+  private note: Note;
+  constructor() {}
+  noteAdder(id: number, content: string, date: string, header: string) {
+    this.note = new Note(id, content, date, header);
+  }
+  getNote() {
+    return this.note;
+  }
+}
+
+//NOT EKLEME İÇİN EKLEYİCİDEN YENİ BİR INSTANCE
+const notAdder = new NoteAdder();
+
+//notları görüntülmek üzere render edilecek notlar sınıfı
 class Notes {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
@@ -26,11 +35,16 @@ class Notes {
   }
 }
 
+//notların başlığı ve modal gibi nesneleri tutan sınıf
 class NoteHeader {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLDivElement;
   btn: HTMLButtonElement;
+  modal: HTMLDivElement;
+  inp: HTMLInputElement;
+  txtArea: HTMLTextAreaElement;
+  addNote: HTMLFormElement;
   constructor() {
     this.templateElement = document.getElementById("tmp-note-container-header") as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
@@ -39,11 +53,36 @@ class NoteHeader {
     this.attach();
 
     this.btn = document.getElementById("add-btn")! as HTMLButtonElement;
-    this.btn.addEventListener("click", this.addNote.bind(this));
+    this.btn.addEventListener("click", this.openNoteAdder.bind(this));
+
+    this.modal = document.getElementById("modal")! as HTMLDivElement;
+
+    this.inp = document.getElementById("inputField")! as HTMLInputElement;
+    this.txtArea = document.getElementById("inputFieldTxt")! as HTMLTextAreaElement;
+    this.addNote = document.getElementById("addNote")! as HTMLFormElement;
+    this.addNote.addEventListener("submit", this.addNewNote.bind(this));
   }
+
   private attach() {
     this.hostElement.insertAdjacentElement("afterbegin", this.element);
   }
-  private addNote() {}
+
+  private openNoteAdder() {
+    const disp = this.modal.style.display;
+    if (disp === "none") {
+      this.modal.style.display = "flex";
+      this.btn.textContent = "İptal Et";
+    } else {
+      this.modal.style.display = "none";
+      this.btn.textContent = "Not Ekle";
+    }
+  }
+
+  private addNewNote(event: SubmitEvent) {
+    event.preventDefault();
+    const today = new Date().toISOString().slice(0, 10);
+    notAdder.noteAdder(Math.random(), this.inp.value, today, this.inp.value);
+  }
 }
-const el = new NoteHeader();
+//NOT BAŞLIĞI VE MODAL RENDERI İÇİN INSTANCE
+const note = new NoteHeader();
