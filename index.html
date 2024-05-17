@@ -10,12 +10,31 @@
   <body>
     <div>
       <template id="tmp-note-container-header">
-        <div id="note-container-header">
-          <div class="header-content">
-            <h1>Notlar</h1>
+        <div>
+          <div id="note-container-header">
+            <div class="header-content">
+              <h1>Notlar</h1>
+            </div>
+            <div class="btn-container">
+              <button id="add-btn" class="add-btn">Not Ekle</button>
+            </div>
           </div>
-          <div class="btn-container">
-            <button id="add-btn" class="add-btn">Yeni Ekle</button>
+          <div id="modal" class="modal">
+            <div class="note">
+              <form id="addNote">
+                <div>
+                  <label>Başlık</label>
+                  <input id="inputField" class="inputField input" type="text" placeholder="Başlık..." />
+                </div>
+                <div>
+                  <label>Not</label>
+                  <textarea id="inputFieldTxt" class="inputField" rows="7" placeholder="Not..."></textarea>
+                </div>
+                <div class="addbtnModalContainer">
+                  <button type="submit" class="createNoteModal">Not Oluştur</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </template>
