@@ -7,5 +7,27 @@
     <link rel="stylesheet" href="styles/app.css" />
     <script src="src/app.js" defer></script>
   </head>
-  <body></body>
+  <body>
+    <div>
+      <template id="tmp-note-container-header">
+        <div id="note-container-header">
+          <div class="header-content">
+            <h1>Notlar</h1>
+          </div>
+          <div class="btn-container">
+            <button id="add-btn" class="add-btn">Yeni Ekle</button>
+          </div>
+        </div>
+      </template>
+      <div class="note-container">
+        <template id="single-note">
+          <div class="note">
+            <p id="header"></p>
+            <p id="content"></p>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div id="app"></div>
+  </body>
 </html>
