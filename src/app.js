@@ -1,9 +1,6 @@
 "use strict";
 class NoteItem {
-    constructor() {
-        this.butn = document.querySelector(".add-btn");
-    }
-    addNote() { }
+    constructor() { }
 }
 class Note {
     constructor(id = Math.random(), content, date, title) { }

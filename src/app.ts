@@ -4,9 +4,7 @@ class NoteItem {
   id: number;
   title?: string;
   date: Date;
-  butn = document.querySelector(".add-btn")! as HTMLButtonElement;
   constructor() {}
-  addNote() {}
 }
 class Note {
   constructor(id: number = Math.random(), content: string, date: Date, title?: string) {}
