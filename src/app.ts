@@ -140,7 +140,13 @@ class NoteHeader {
   private addNewNote(event: SubmitEvent) {
     event.preventDefault();
     const today = new Date().toISOString().slice(0, 10);
-    notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
+    if (this.txtArea.value) {
+      notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
+    } else {
+      alert("Not girişi yapmadınız");
+    }
+    this.txtArea.value = "";
+    this.inp.value = "";
     this.openNoteAdder();
   }
 }
