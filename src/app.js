@@ -11,10 +11,24 @@ class Note {
 class NoteState {
     constructor() {
         this.notes = [];
+        this.loadNotes();
+    }
+    loadNotes() {
+        const savedNotes = localStorage.getItem("notes");
+        if (savedNotes) {
+            this.notes = JSON.parse(savedNotes);
+        }
+    }
+    saveNotes() {
+        localStorage.setItem("notes", JSON.stringify(this.notes));
     }
 }
+const noteStar = new NoteState();
 class NoteItem {
     constructor() {
+        this.contentItem = "";
+        this.headerItem = "";
+        this.dateItem = "";
         this.singleNote = document.getElementById("single-note");
         this.hostElement = document.getElementById("note-container");
         const importedNode = document.importNode(this.singleNote.content, true);
@@ -46,10 +60,12 @@ class Notes extends NoteState {
 class NoteAdder extends NoteState {
     constructor() {
         super();
+        this.noteShower();
     }
     noteAdder(id, content, date, header) {
         this.note = new Note(id, content, date, header);
         this.notes.push(this.note);
+        this.saveNotes(); // Notları kaydet
         this.noteShower();
     }
     noteShower() {
@@ -61,7 +77,6 @@ class NoteAdder extends NoteState {
             not.headerItem = no.title;
             not.dateItem = no.date;
             not.attach();
-            console.log(not);
         }
     }
 }
@@ -101,6 +116,7 @@ class NoteHeader {
         event.preventDefault();
         const today = new Date().toISOString().slice(0, 10);
         notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
+        this.openNoteAdder();
     }
 }
 //NOT BAŞLIĞI VE MODAL RENDERI İÇİN INSTANCE

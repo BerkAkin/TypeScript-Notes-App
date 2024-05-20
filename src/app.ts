@@ -5,13 +5,27 @@ class Note {
 
 class NoteState {
   protected notes: Note[] = [];
-  constructor() {}
+  constructor() {
+    this.loadNotes();
+  }
+
+  protected loadNotes() {
+    const savedNotes = localStorage.getItem("notes");
+    if (savedNotes) {
+      this.notes = JSON.parse(savedNotes);
+    }
+  }
+  protected saveNotes() {
+    localStorage.setItem("notes", JSON.stringify(this.notes));
+  }
 }
 
+const noteStar = new NoteState();
+
 class NoteItem {
-  contentItem: string;
-  headerItem: string;
-  dateItem: string;
+  contentItem: string = "";
+  headerItem: string = "";
+  dateItem: string = "";
   private singleNote: HTMLTemplateElement;
   private hostElement: HTMLDivElement;
   private element: HTMLDivElement;
@@ -48,30 +62,31 @@ class Notes extends NoteState {
     this.hostElement.insertAdjacentElement("beforeend", this.element);
   }
 }
-
 //NOT EKLEYİCİ SINIF
 class NoteAdder extends NoteState {
   private note: Note;
   constructor() {
     super();
+    this.noteShower();
   }
 
   noteAdder(id: number, content: string, date: string, header: string) {
     this.note = new Note(id, content, date, header);
     this.notes.push(this.note);
+    this.saveNotes(); // Notları kaydet
     this.noteShower();
   }
 
   noteShower() {
     const notes = document.getElementById("note-container")! as HTMLDivElement;
     notes.innerHTML = "";
+
     for (let no of this.notes) {
       const not = new NoteItem();
       not.contentItem = no.content;
       not.headerItem = no.title;
       not.dateItem = no.date;
       not.attach();
-      console.log(not);
     }
   }
 }
@@ -126,6 +141,7 @@ class NoteHeader {
     event.preventDefault();
     const today = new Date().toISOString().slice(0, 10);
     notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
+    this.openNoteAdder();
   }
 }
 //NOT BAŞLIĞI VE MODAL RENDERI İÇİN INSTANCE
