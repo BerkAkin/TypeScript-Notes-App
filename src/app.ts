@@ -3,27 +3,41 @@ class Note {
   constructor(public id: number, public content: string, public date: string, public title?: string) {}
 }
 
-//NOT EKLEYİCİ SINIF
-class NoteAdder {
-  private note: Note;
+class NoteState {
+  protected notes: Note[] = [];
   constructor() {}
-  noteAdder(id: number, content: string, date: string, header: string) {
-    this.note = new Note(id, content, date, header);
+}
+
+class NoteItem {
+  contentItem: string;
+  headerItem: string;
+  dateItem: string;
+  private singleNote: HTMLTemplateElement;
+  private hostElement: HTMLDivElement;
+  private element: HTMLDivElement;
+  constructor() {
+    this.singleNote = document.getElementById("single-note") as HTMLTemplateElement;
+    this.hostElement = document.getElementById("note-container")! as HTMLDivElement;
+    const importedNode = document.importNode(this.singleNote.content, true);
+    this.element = importedNode.firstElementChild as HTMLDivElement;
+    this.attach();
   }
-  getNote() {
-    return this.note;
+
+  attach() {
+    this.element.querySelector("#content")!.textContent = this.contentItem;
+    this.element.querySelector("#date")!.textContent = this.dateItem;
+    this.element.querySelector("#header")!.textContent = this.headerItem;
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
   }
 }
 
-//NOT EKLEME İÇİN EKLEYİCİDEN YENİ BİR INSTANCE
-const notAdder = new NoteAdder();
-
 //notları görüntülmek üzere render edilecek notlar sınıfı
-class Notes {
+class Notes extends NoteState {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLDivElement;
   constructor() {
+    super();
     this.templateElement = document.getElementById("single-note") as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
     const importedNode = document.importNode(this.templateElement.content, true);
@@ -34,6 +48,34 @@ class Notes {
     this.hostElement.insertAdjacentElement("beforeend", this.element);
   }
 }
+
+//NOT EKLEYİCİ SINIF
+class NoteAdder extends NoteState {
+  private note: Note;
+  constructor() {
+    super();
+  }
+
+  noteAdder(id: number, content: string, date: string, header: string) {
+    this.note = new Note(id, content, date, header);
+    this.notes.push(this.note);
+    this.noteShower();
+  }
+
+  noteShower() {
+    for (let no of this.notes) {
+      const not = new NoteItem();
+      not.contentItem = no.content;
+      not.headerItem = no.title;
+      not.dateItem = no.date;
+      not.attach();
+      console.log(not);
+    }
+  }
+}
+
+//NOT EKLEME İÇİN EKLEYİCİDEN YENİ BİR INSTANCE
+const notAdder = new NoteAdder();
 
 //notların başlığı ve modal gibi nesneleri tutan sınıf
 class NoteHeader {
@@ -81,7 +123,7 @@ class NoteHeader {
   private addNewNote(event: SubmitEvent) {
     event.preventDefault();
     const today = new Date().toISOString().slice(0, 10);
-    notAdder.noteAdder(Math.random(), this.inp.value, today, this.inp.value);
+    notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
   }
 }
 //NOT BAŞLIĞI VE MODAL RENDERI İÇİN INSTANCE

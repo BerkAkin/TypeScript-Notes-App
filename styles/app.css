@@ -20,10 +20,7 @@ html {
   display: flex;
   justify-content: space-evenly;
 }
-.note-container {
-  display: flex;
-  justify-content: center;
-}
+
 .note {
   margin-left: 50px;
   margin-right: 50px;
@@ -109,4 +106,20 @@ textarea {
   background-color: rgb(255, 164, 27);
   color: white;
   margin-top: 5px;
+}
+
+#note-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.SinNote {
+  background-color: white;
+  width: 90%;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 25px;
 }

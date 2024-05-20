@@ -8,21 +8,30 @@ class Note {
         this.title = title;
     }
 }
-//NOT EKLEYİCİ SINIF
-class NoteAdder {
-    constructor() { }
-    noteAdder(id, content, date, header) {
-        this.note = new Note(id, content, date, header);
-    }
-    getNote() {
-        return this.note;
+class NoteState {
+    constructor() {
+        this.notes = [];
     }
 }
-//NOT EKLEME İÇİN EKLEYİCİDEN YENİ BİR INSTANCE
-const notAdder = new NoteAdder();
-//notları görüntülmek üzere render edilecek notlar sınıfı
-class Notes {
+class NoteItem {
     constructor() {
+        this.singleNote = document.getElementById("single-note");
+        this.hostElement = document.getElementById("note-container");
+        const importedNode = document.importNode(this.singleNote.content, true);
+        this.element = importedNode.firstElementChild;
+        this.attach();
+    }
+    attach() {
+        this.element.querySelector("#content").textContent = this.contentItem;
+        this.element.querySelector("#date").textContent = this.dateItem;
+        this.element.querySelector("#header").textContent = this.headerItem;
+        this.hostElement.insertAdjacentElement("beforeend", this.element);
+    }
+}
+//notları görüntülmek üzere render edilecek notlar sınıfı
+class Notes extends NoteState {
+    constructor() {
+        super();
         this.templateElement = document.getElementById("single-note");
         this.hostElement = document.getElementById("app");
         const importedNode = document.importNode(this.templateElement.content, true);
@@ -33,6 +42,29 @@ class Notes {
         this.hostElement.insertAdjacentElement("beforeend", this.element);
     }
 }
+//NOT EKLEYİCİ SINIF
+class NoteAdder extends NoteState {
+    constructor() {
+        super();
+    }
+    noteAdder(id, content, date, header) {
+        this.note = new Note(id, content, date, header);
+        this.notes.push(this.note);
+        this.noteShower();
+    }
+    noteShower() {
+        for (let no of this.notes) {
+            const not = new NoteItem();
+            not.contentItem = no.content;
+            not.headerItem = no.title;
+            not.dateItem = no.date;
+            not.attach();
+            console.log(not);
+        }
+    }
+}
+//NOT EKLEME İÇİN EKLEYİCİDEN YENİ BİR INSTANCE
+const notAdder = new NoteAdder();
 //notların başlığı ve modal gibi nesneleri tutan sınıf
 class NoteHeader {
     constructor() {
@@ -66,7 +98,7 @@ class NoteHeader {
     addNewNote(event) {
         event.preventDefault();
         const today = new Date().toISOString().slice(0, 10);
-        notAdder.noteAdder(Math.random(), this.inp.value, today, this.inp.value);
+        notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
     }
 }
 //NOT BAŞLIĞI VE MODAL RENDERI İÇİN INSTANCE
