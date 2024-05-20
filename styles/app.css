@@ -89,8 +89,8 @@ textarea {
   position: absolute;
   display: none;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 .addbtnModalContainer {
   display: flex;
@@ -122,4 +122,18 @@ textarea {
   padding: 10px;
   margin: 10px;
   margin-top: 25px;
+  word-wrap: break-word;
+}
+#app {
+  position: sticky;
+  top: 0;
+}
+
+.dateContainer {
+  justify-content: end;
+  display: flex;
+}
+
+.SinNote,
+#date {
 }

@@ -63,6 +63,8 @@ class NoteAdder extends NoteState {
   }
 
   noteShower() {
+    const notes = document.getElementById("note-container")! as HTMLDivElement;
+    notes.innerHTML = "";
     for (let no of this.notes) {
       const not = new NoteItem();
       not.contentItem = no.content;
