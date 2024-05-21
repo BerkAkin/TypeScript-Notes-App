@@ -1,6 +1,7 @@
 "use strict";
 //NOTE İÇİN BASE CLASS
 class Note {
+    //bu sınıf not objesi oluşturmaya yarar
     constructor(id, content, date, title) {
         this.id = id;
         this.content = content;
@@ -10,70 +11,44 @@ class Note {
 }
 class NoteState {
     constructor() {
+        //notların deposudur ve durumunu kontrol eder
         this.notes = [];
-        this.loadNotes();
+        this.loadFromLocalStorage();
         console.log(this.notes);
     }
-    loadNotes() {
+    //localstorage'dan notları alır
+    loadFromLocalStorage() {
         const savedNotes = localStorage.getItem("notes");
         if (savedNotes) {
             this.notes = JSON.parse(savedNotes);
         }
     }
-    saveNotes() {
+    //localstorage'a not kaydeder
+    saveToLocalStorage() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
     }
-    deleteNote(id) {
-        const filtered = this.notes.filter((note) => note.id !== id);
-        this.notes = filtered;
-        this.saveNotes();
-    }
 }
-const noteStar = new NoteState();
-class NoteItem {
-    constructor() {
-        this.contentItem = "";
-        this.headerItem = "";
-        this.dateItem = "";
-        this.singleNote = document.getElementById("single-note");
-        this.hostElement = document.getElementById("note-container");
-        const importedNode = document.importNode(this.singleNote.content, true);
-        this.element = importedNode.firstElementChild;
-        this.attach();
-    }
-    attach() {
-        this.element.querySelector("#content").textContent = this.contentItem;
-        this.element.querySelector("#date").textContent = this.dateItem;
-        this.element.querySelector("#header").textContent = this.headerItem;
-        this.hostElement.insertAdjacentElement("beforeend", this.element);
-    }
-}
-//notları görüntülmek üzere render edilecek notlar sınıfı
-class Notes extends NoteState {
-    constructor() {
-        super();
-        this.templateElement = document.getElementById("single-note");
-        this.hostElement = document.getElementById("app");
-        const importedNode = document.importNode(this.templateElement.content, true);
-        this.element = importedNode.firstElementChild;
-        this.attach();
-    }
-    attach() {
-        this.hostElement.insertAdjacentElement("beforeend", this.element);
-    }
-}
-//NOT EKLEYİCİ SINIF
-class NoteAdder extends NoteState {
+//NOT Operasyonları
+class NoteOperations extends NoteState {
     constructor() {
         super();
         this.noteShower();
     }
+    //not ekler
     noteAdder(id, content, date, header) {
         this.note = new Note(id, content, date, header);
         this.notes.push(this.note);
-        this.saveNotes(); // Notları kaydet
+        this.saveToLocalStorage();
         this.noteShower();
     }
+    //not siler
+    deleteNote(id) {
+        const filtered = this.notes.filter((note) => note.id !== id);
+        this.notes = filtered;
+        this.saveToLocalStorage();
+        this.noteShower();
+    }
+    //notları gösterir
     noteShower() {
         const notes = document.getElementById("note-container");
         notes.innerHTML = "";
@@ -82,12 +57,38 @@ class NoteAdder extends NoteState {
             not.contentItem = no.content;
             not.headerItem = no.title;
             not.dateItem = no.date;
+            not.id = no.id;
             not.attach();
         }
     }
 }
-//NOT EKLEME İÇİN EKLEYİCİDEN YENİ BİR INSTANCE
-const notAdder = new NoteAdder();
+class NoteItem {
+    constructor() {
+        this.contentItem = "";
+        this.headerItem = "";
+        this.dateItem = "";
+        this.id = 0;
+        this.singleNote = document.getElementById("single-note");
+        this.hostElement = document.getElementById("note-container");
+        const importedNode = document.importNode(this.singleNote.content, true);
+        this.element = importedNode.firstElementChild;
+        this.attach();
+    }
+    attach() {
+        var _a;
+        this.element.querySelector("#content").textContent = this.contentItem;
+        this.element.querySelector("#date").textContent = this.dateItem;
+        this.element.querySelector("#header").textContent = this.headerItem;
+        (_a = this.element.querySelector("#deleteBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+            this.deleteNote();
+        });
+        this.hostElement.insertAdjacentElement("beforeend", this.element);
+    }
+    deleteNote() {
+        notAdder.deleteNote(this.id); // NoteOperations sınıfındaki deleteNote işlevini çağır
+        this.element.remove(); // DOM'dan notu kaldır
+    }
+}
 //notların başlığı ve modal gibi nesneleri tutan sınıf
 class NoteHeader {
     constructor() {
@@ -132,5 +133,6 @@ class NoteHeader {
         this.openNoteAdder();
     }
 }
-//NOT BAŞLIĞI VE MODAL RENDERI İÇİN INSTANCE
 const note = new NoteHeader();
+const noteStar = new NoteState();
+const notAdder = new NoteOperations();
