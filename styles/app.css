@@ -34,6 +34,7 @@ html {
   padding-left: 5px;
   font-size: 2rem;
   color: #303030;
+  width: 95%;
 }
 #content {
   padding-left: 5px;
@@ -136,4 +137,23 @@ textarea {
 
 .SinNote,
 #date {
+}
+
+#deleteBtnContainer {
+  display: flex;
+  justify-content: end;
+}
+
+#deleteBtn {
+  background-color: red;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  width: 5%;
+  align-self: center;
+  height: 30px;
+  font-size: 1.2rem;
+  padding: 5px;
+  cursor: pointer;
 }
