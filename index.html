@@ -20,18 +20,17 @@
             </div>
           </div>
           <div id="modal" class="modal">
-            <div class="note">
+            <div id="note" class="note">
               <form id="addNote">
                 <div>
-                  <label>Başlık</label>
                   <input id="inputField" class="inputField input" type="text" placeholder="Başlık..." />
                 </div>
                 <div>
-                  <label>Not</label>
                   <textarea id="inputFieldTxt" class="inputField" rows="7" placeholder="Not..."></textarea>
                 </div>
                 <div class="addbtnModalContainer">
                   <button type="submit" class="createNoteModal">Not Oluştur</button>
+                  <button id="checklistAddBtn" class="checklistAddBtn">Checklist Ekle</button>
                 </div>
               </form>
             </div>
@@ -44,7 +43,6 @@
             <p id="header"></p>
             <button id="deleteBtn">Notu Sil</button>
           </div>
-
           <p id="content"></p>
           <div class="dateContainer">
             <p id="date"></p>
