@@ -7,6 +7,7 @@ class NoteState {
   protected notes: Note[] = [];
   constructor() {
     this.loadNotes();
+    console.log(this.notes);
   }
 
   protected loadNotes() {
@@ -17,6 +18,11 @@ class NoteState {
   }
   protected saveNotes() {
     localStorage.setItem("notes", JSON.stringify(this.notes));
+  }
+  protected deleteNote(id: number) {
+    const filtered = this.notes.filter((note) => note.id !== id);
+    this.notes = filtered;
+    this.saveNotes();
   }
 }
 

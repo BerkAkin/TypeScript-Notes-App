@@ -12,6 +12,7 @@ class NoteState {
     constructor() {
         this.notes = [];
         this.loadNotes();
+        console.log(this.notes);
     }
     loadNotes() {
         const savedNotes = localStorage.getItem("notes");
@@ -21,6 +22,11 @@ class NoteState {
     }
     saveNotes() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
+    }
+    deleteNote(id) {
+        const filtered = this.notes.filter((note) => note.id !== id);
+        this.notes = filtered;
+        this.saveNotes();
     }
 }
 const noteStar = new NoteState();
