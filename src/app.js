@@ -1,7 +1,6 @@
 "use strict";
 //NOTE İÇİN BASE CLASS
 class Note {
-    //bu sınıf not objesi oluşturmaya yarar
     constructor(id, content, date, title) {
         this.id = id;
         this.content = content;
@@ -11,19 +10,16 @@ class Note {
 }
 class NoteState {
     constructor() {
-        //notların deposudur ve durumunu kontrol eder
         this.notes = [];
         this.loadFromLocalStorage();
         console.log(this.notes);
     }
-    //localstorage'dan notları alır
     loadFromLocalStorage() {
         const savedNotes = localStorage.getItem("notes");
         if (savedNotes) {
             this.notes = JSON.parse(savedNotes);
         }
     }
-    //localstorage'a not kaydeder
     saveToLocalStorage() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
     }
@@ -34,21 +30,18 @@ class NoteOperations extends NoteState {
         super();
         this.noteShower();
     }
-    //not ekler
     noteAdder(id, content, date, header) {
         this.note = new Note(id, content, date, header);
         this.notes.push(this.note);
         this.saveToLocalStorage();
         this.noteShower();
     }
-    //not siler
     deleteNote(id) {
         const filtered = this.notes.filter((note) => note.id !== id);
         this.notes = filtered;
         this.saveToLocalStorage();
         this.noteShower();
     }
-    //notları gösterir
     noteShower() {
         const notes = document.getElementById("note-container");
         notes.innerHTML = "";
@@ -85,11 +78,10 @@ class NoteItem {
         this.hostElement.insertAdjacentElement("beforeend", this.element);
     }
     deleteNote() {
-        notAdder.deleteNote(this.id); // NoteOperations sınıfındaki deleteNote işlevini çağır
-        this.element.remove(); // DOM'dan notu kaldır
+        notOperations.deleteNote(this.id);
+        this.element.remove();
     }
 }
-//notların başlığı ve modal gibi nesneleri tutan sınıf
 class NoteHeader {
     constructor() {
         this.templateElement = document.getElementById("tmp-note-container-header");
@@ -123,7 +115,7 @@ class NoteHeader {
         event.preventDefault();
         const today = new Date().toISOString().slice(0, 10);
         if (this.txtArea.value) {
-            notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
+            notOperations.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
         }
         else {
             alert("Not girişi yapmadınız");
@@ -133,6 +125,6 @@ class NoteHeader {
         this.openNoteAdder();
     }
 }
-const note = new NoteHeader();
-const noteStar = new NoteState();
-const notAdder = new NoteOperations();
+const noteHeader = new NoteHeader();
+const noteState = new NoteState();
+const notOperations = new NoteOperations();

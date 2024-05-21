@@ -1,24 +1,31 @@
 //NOTE İÇİN BASE CLASS
 class Note {
-  //bu sınıf not objesi oluşturmaya yarar
   constructor(public id: number, public content: string, public date: string, public title?: string) {}
 }
 
+interface INoteItem {
+  contentItem: string;
+  headerItem: string;
+  dateItem: string;
+  id: number;
+
+  attach(): void;
+}
+
 class NoteState {
-  //notların deposudur ve durumunu kontrol eder
   protected notes: Note[] = [];
   constructor() {
     this.loadFromLocalStorage();
     console.log(this.notes);
   }
-  //localstorage'dan notları alır
+
   protected loadFromLocalStorage() {
     const savedNotes = localStorage.getItem("notes");
     if (savedNotes) {
       this.notes = JSON.parse(savedNotes);
     }
   }
-  //localstorage'a not kaydeder
+
   protected saveToLocalStorage() {
     localStorage.setItem("notes", JSON.stringify(this.notes));
   }
@@ -31,21 +38,21 @@ class NoteOperations extends NoteState {
     super();
     this.noteShower();
   }
-  //not ekler
+
   noteAdder(id: number, content: string, date: string, header: string) {
     this.note = new Note(id, content, date, header);
     this.notes.push(this.note);
     this.saveToLocalStorage();
     this.noteShower();
   }
-  //not siler
+
   deleteNote(id: number) {
     const filtered = this.notes.filter((note) => note.id !== id);
     this.notes = filtered;
     this.saveToLocalStorage();
     this.noteShower();
   }
-  //notları gösterir
+
   noteShower() {
     const notes = document.getElementById("note-container")! as HTMLDivElement;
     notes.innerHTML = "";
@@ -61,7 +68,7 @@ class NoteOperations extends NoteState {
   }
 }
 
-class NoteItem {
+class NoteItem implements INoteItem {
   contentItem: string = "";
   headerItem: string = "";
   dateItem: string = "";
@@ -88,20 +95,22 @@ class NoteItem {
   }
 
   deleteNote() {
-    notAdder.deleteNote(this.id); // NoteOperations sınıfındaki deleteNote işlevini çağır
-    this.element.remove(); // DOM'dan notu kaldır
+    notOperations.deleteNote(this.id);
+    this.element.remove();
   }
 }
-//notların başlığı ve modal gibi nesneleri tutan sınıf
+
 class NoteHeader {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLDivElement;
+
   btn: HTMLButtonElement;
   modal: HTMLDivElement;
   inp: HTMLInputElement;
   txtArea: HTMLTextAreaElement;
   addNote: HTMLFormElement;
+
   constructor() {
     this.templateElement = document.getElementById("tmp-note-container-header") as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
@@ -139,7 +148,7 @@ class NoteHeader {
     event.preventDefault();
     const today = new Date().toISOString().slice(0, 10);
     if (this.txtArea.value) {
-      notAdder.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
+      notOperations.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
     } else {
       alert("Not girişi yapmadınız");
     }
@@ -149,6 +158,6 @@ class NoteHeader {
   }
 }
 
-const note = new NoteHeader();
-const noteStar = new NoteState();
-const notAdder = new NoteOperations();
+const noteHeader = new NoteHeader();
+const noteState = new NoteState();
+const notOperations = new NoteOperations();
