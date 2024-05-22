@@ -12,7 +12,6 @@ class NoteState {
     constructor() {
         this.notes = [];
         this.loadFromLocalStorage();
-        console.log(this.notes);
     }
     loadFromLocalStorage() {
         const savedNotes = localStorage.getItem("notes");
@@ -82,13 +81,8 @@ class NoteItem {
         this.element.remove();
     }
 }
-class NoteHeader {
+class Modal {
     constructor() {
-        this.templateElement = document.getElementById("tmp-note-container-header");
-        this.hostElement = document.getElementById("app");
-        const importedNode = document.importNode(this.templateElement.content, true);
-        this.element = importedNode.firstElementChild;
-        this.attach();
         this.btn = document.getElementById("add-btn");
         this.btn.addEventListener("click", this.openNoteAdder.bind(this));
         this.modal = document.getElementById("modal");
@@ -96,9 +90,12 @@ class NoteHeader {
         this.txtArea = document.getElementById("inputFieldTxt");
         this.addNote = document.getElementById("addNote");
         this.addNote.addEventListener("submit", this.addNewNote.bind(this));
-    }
-    attach() {
-        this.hostElement.insertAdjacentElement("afterbegin", this.element);
+        this.addCheckListBtn = document.getElementById("checklistAddBtn");
+        this.checks = document.querySelector("#checks");
+        this.addCheckListBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            checkList.addCheckList(prompt("Checklist Öğesi"));
+        });
     }
     openNoteAdder() {
         const disp = this.modal.style.display;
@@ -117,14 +114,33 @@ class NoteHeader {
         if (this.txtArea.value) {
             notOperations.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
         }
-        else {
-            alert("Not girişi yapmadınız");
-        }
         this.txtArea.value = "";
         this.inp.value = "";
+        this.checks.innerHTML = "";
         this.openNoteAdder();
     }
 }
-const noteHeader = new NoteHeader();
+class CheckList extends Modal {
+    constructor() {
+        super();
+    }
+    addCheckList(input) {
+        this.checks.innerHTML += `<input id="${input}" type="checkbox"> <label id="${input}">${input}</label><br>`;
+    }
+}
+class Header {
+    constructor() {
+        this.templateElement = document.getElementById("tmp-note-container-header");
+        this.hostElement = document.getElementById("app");
+        const importedNode = document.importNode(this.templateElement.content, true);
+        this.element = importedNode.firstElementChild;
+        this.attach();
+    }
+    attach() {
+        this.hostElement.insertAdjacentElement("afterbegin", this.element);
+    }
+}
+const noteHeader = new Header();
+const checkList = new CheckList();
 const noteState = new NoteState();
 const notOperations = new NoteOperations();

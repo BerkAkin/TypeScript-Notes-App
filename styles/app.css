@@ -21,14 +21,6 @@ html {
   justify-content: space-evenly;
 }
 
-.note {
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-top: 20px;
-  padding: 5px;
-  background-color: #ffffff;
-}
-
 #header {
   margin-top: 2px;
   padding-left: 5px;
@@ -83,8 +75,13 @@ textarea {
 
 .note {
   width: 40%;
-  height: 360px;
+  height: 520px;
   border-radius: 5px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 20px;
+  padding: 5px;
+  background-color: #ffffff;
 }
 
 .modal {
@@ -98,13 +95,13 @@ textarea {
 }
 .addbtnModalContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 }
 .createNoteModal {
-  width: 200px;
+  width: 150px;
   height: 50px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border: none;
   border-radius: 4px;
   background-color: rgb(48, 179, 48);
@@ -159,11 +156,18 @@ textarea {
 
 .checklistAddBtn {
   background-color: rgb(255, 164, 27);
-  width: 200px;
+  width: 150px;
   height: 50px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border: none;
   border-radius: 4px;
   color: white;
   margin-top: 30px;
+}
+
+#checks {
+  overflow: auto;
+  overflow-x: hidden;
+  height: 150px;
+  padding: 10px;
 }

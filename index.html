@@ -28,9 +28,11 @@
                 <div>
                   <textarea id="inputFieldTxt" class="inputField" rows="7" placeholder="Not..."></textarea>
                 </div>
+                <hr />
+                <div id="checks"></div>
                 <div class="addbtnModalContainer">
-                  <button type="submit" class="createNoteModal">Not Oluştur</button>
-                  <button id="checklistAddBtn" class="checklistAddBtn">Checklist Ekle</button>
+                  <button type="submit" class="createNoteModal">Not Oluştur</button
+                  ><button id="checklistAddBtn" class="checklistAddBtn">Checklist Ekle</button>
                 </div>
               </form>
             </div>
@@ -44,9 +46,16 @@
             <button id="deleteBtn">Notu Sil</button>
           </div>
           <p id="content"></p>
+          <ul id="checklist"></ul>
           <div class="dateContainer">
             <p id="date"></p>
           </div>
+        </div>
+      </template>
+      <template id="checkboxTemplate">
+        <div>
+          <input type="checkbox" />
+          <p></p>
         </div>
       </template>
     </div>

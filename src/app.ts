@@ -3,20 +3,10 @@ class Note {
   constructor(public id: number, public content: string, public date: string, public title?: string) {}
 }
 
-interface INoteItem {
-  contentItem: string;
-  headerItem: string;
-  dateItem: string;
-  id: number;
-
-  attach(): void;
-}
-
 class NoteState {
   protected notes: Note[] = [];
   constructor() {
     this.loadFromLocalStorage();
-    console.log(this.notes);
   }
 
   protected loadFromLocalStorage() {
@@ -68,7 +58,7 @@ class NoteOperations extends NoteState {
   }
 }
 
-class NoteItem implements INoteItem {
+class NoteItem {
   contentItem: string = "";
   headerItem: string = "";
   dateItem: string = "";
@@ -100,24 +90,15 @@ class NoteItem implements INoteItem {
   }
 }
 
-class NoteHeader {
-  templateElement: HTMLTemplateElement;
-  hostElement: HTMLDivElement;
-  element: HTMLDivElement;
-
+class Modal {
   btn: HTMLButtonElement;
   modal: HTMLDivElement;
   inp: HTMLInputElement;
   txtArea: HTMLTextAreaElement;
   addNote: HTMLFormElement;
-
+  addCheckListBtn: HTMLButtonElement;
+  checks: HTMLDivElement;
   constructor() {
-    this.templateElement = document.getElementById("tmp-note-container-header") as HTMLTemplateElement;
-    this.hostElement = document.getElementById("app")! as HTMLDivElement;
-    const importedNode = document.importNode(this.templateElement.content, true);
-    this.element = importedNode.firstElementChild as HTMLDivElement;
-    this.attach();
-
     this.btn = document.getElementById("add-btn")! as HTMLButtonElement;
     this.btn.addEventListener("click", this.openNoteAdder.bind(this));
 
@@ -127,10 +108,13 @@ class NoteHeader {
     this.txtArea = document.getElementById("inputFieldTxt")! as HTMLTextAreaElement;
     this.addNote = document.getElementById("addNote")! as HTMLFormElement;
     this.addNote.addEventListener("submit", this.addNewNote.bind(this));
-  }
 
-  private attach() {
-    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+    this.addCheckListBtn = document.getElementById("checklistAddBtn")! as HTMLButtonElement;
+    this.checks = document.querySelector("#checks")! as HTMLDivElement;
+    this.addCheckListBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      checkList.addCheckList(prompt("Checklist Öğesi")!);
+    });
   }
 
   private openNoteAdder() {
@@ -149,15 +133,42 @@ class NoteHeader {
     const today = new Date().toISOString().slice(0, 10);
     if (this.txtArea.value) {
       notOperations.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
-    } else {
-      alert("Not girişi yapmadınız");
     }
     this.txtArea.value = "";
     this.inp.value = "";
+    this.checks.innerHTML = "";
     this.openNoteAdder();
   }
 }
 
-const noteHeader = new NoteHeader();
+class CheckList extends Modal {
+  constructor() {
+    super();
+  }
+  addCheckList(input: string) {
+    this.checks.innerHTML += `<input id="${input}" type="checkbox"> <label id="${input}">${input}</label><br>`;
+  }
+}
+
+class Header {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLDivElement;
+
+  constructor() {
+    this.templateElement = document.getElementById("tmp-note-container-header") as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+    const importedNode = document.importNode(this.templateElement.content, true);
+    this.element = importedNode.firstElementChild as HTMLDivElement;
+    this.attach();
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const noteHeader = new Header();
+const checkList = new CheckList();
 const noteState = new NoteState();
 const notOperations = new NoteOperations();
