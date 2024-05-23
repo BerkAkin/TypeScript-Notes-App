@@ -1,5 +1,4 @@
 "use strict";
-//NOTE İÇİN BASE CLASS
 class Note {
     constructor(id, content, date, title) {
         this.id = id;
@@ -8,10 +7,56 @@ class Note {
         this.title = title;
     }
 }
-class NoteState {
+class Component {
+    constructor(templateElementId, hostElementId) {
+        this.templateElement = document.getElementById(templateElementId);
+        this.hostElement = document.getElementById(hostElementId);
+        const importedNode = document.importNode(this.templateElement.content, true);
+        this.element = importedNode.firstElementChild;
+        this.attach();
+    }
+    attach() {
+        this.hostElement.insertAdjacentElement("afterbegin", this.element);
+    }
+}
+class Header extends Component {
+    constructor() {
+        super("tmp-note-container-header", "app");
+        this.configure();
+    }
+    configure() {
+        this.showModalBtn = document.querySelector("#add-btn");
+        this.showModalBtn.addEventListener("click", () => this.showModal());
+        this.modal = document.querySelector("#modal");
+        this.modalForm = document.querySelector("#addNoteForm");
+        this.modalForm.addEventListener("submit", this.gatherInputs.bind(this));
+        this.noteTitleInput = document.getElementById("inputField");
+        this.noteContentInput = document.getElementById("inputFieldTxt");
+        this.modalCancelButton = document.querySelector("#modalCancelButton");
+        this.modalCancelButton.addEventListener("click", () => this.hideModal());
+    }
+    showModal() {
+        this.modal.style.display = "flex";
+    }
+    hideModal() {
+        this.modal.style.display = "none";
+    }
+    gatherInputs(e) {
+        e.preventDefault();
+        console.log();
+        const content = this.noteContentInput.value;
+        const title = this.noteTitleInput.value;
+        this.addNewNote(content, title);
+    }
+    addNewNote(content, title) {
+        const newDate = new Date().toISOString().slice(0, 10).split("-").reverse().join("/");
+        noteOperations.noteAdder(Math.random(), content, newDate, title);
+    }
+}
+class NoteOperations {
     constructor() {
         this.notes = [];
-        this.loadFromLocalStorage();
+        //this.loadFromLocalStorage();
     }
     loadFromLocalStorage() {
         const savedNotes = localStorage.getItem("notes");
@@ -22,125 +67,37 @@ class NoteState {
     saveToLocalStorage() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
     }
-}
-//NOT Operasyonları
-class NoteOperations extends NoteState {
-    constructor() {
-        super();
-        this.noteShower();
-    }
-    noteAdder(id, content, date, header) {
-        this.note = new Note(id, content, date, header);
-        this.notes.push(this.note);
-        this.saveToLocalStorage();
-        this.noteShower();
+    noteAdder(id, content, date, title) {
+        const newNote = new Note(id, content, date, title);
+        this.notes.push(newNote);
+        this.renderNotes();
     }
     deleteNote(id) {
-        const filtered = this.notes.filter((note) => note.id !== id);
-        this.notes = filtered;
-        this.saveToLocalStorage();
-        this.noteShower();
+        //const filtered = noteState.notes.filter((note) => note.id !== id);
     }
-    noteShower() {
-        const notes = document.getElementById("note-container");
-        notes.innerHTML = "";
-        for (let no of this.notes) {
-            const not = new NoteItem();
-            not.contentItem = no.content;
-            not.headerItem = no.title;
-            not.dateItem = no.date;
-            not.id = no.id;
-            not.attach();
+    renderNotes() {
+        let newNoteItem = new NoteItem("single-note", "note-container");
+        for (let oneNote of noteOperations.notes) {
+            newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date);
         }
     }
 }
 class NoteItem {
-    constructor() {
-        this.contentItem = "";
-        this.headerItem = "";
-        this.dateItem = "";
-        this.id = 0;
-        this.singleNote = document.getElementById("single-note");
-        this.hostElement = document.getElementById("note-container");
-        const importedNode = document.importNode(this.singleNote.content, true);
-        this.element = importedNode.firstElementChild;
-        this.attach();
-    }
-    attach() {
-        var _a;
-        this.element.querySelector("#content").textContent = this.contentItem;
-        this.element.querySelector("#date").textContent = this.dateItem;
-        this.element.querySelector("#header").textContent = this.headerItem;
-        (_a = this.element.querySelector("#deleteBtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
-            this.deleteNote();
-        });
-        this.hostElement.insertAdjacentElement("beforeend", this.element);
-    }
-    deleteNote() {
-        notOperations.deleteNote(this.id);
-        this.element.remove();
-    }
-}
-class Modal {
-    constructor() {
-        this.btn = document.getElementById("add-btn");
-        this.btn.addEventListener("click", this.openNoteAdder.bind(this));
-        this.modal = document.getElementById("modal");
-        this.inp = document.getElementById("inputField");
-        this.txtArea = document.getElementById("inputFieldTxt");
-        this.addNote = document.getElementById("addNote");
-        this.addNote.addEventListener("submit", this.addNewNote.bind(this));
-        this.addCheckListBtn = document.getElementById("checklistAddBtn");
-        this.checks = document.querySelector("#checks");
-        this.addCheckListBtn.addEventListener("click", (event) => {
-            event.preventDefault();
-            checkList.addCheckList(prompt("Checklist Öğesi"));
-        });
-    }
-    openNoteAdder() {
-        const disp = this.modal.style.display;
-        if (disp === "none") {
-            this.modal.style.display = "flex";
-            this.btn.textContent = "İptal Et";
-        }
-        else {
-            this.modal.style.display = "none";
-            this.btn.textContent = "Not Ekle";
-        }
-    }
-    addNewNote(event) {
-        event.preventDefault();
-        const today = new Date().toISOString().slice(0, 10);
-        if (this.txtArea.value) {
-            notOperations.noteAdder(Math.random(), this.txtArea.value, today, this.inp.value);
-        }
-        this.txtArea.value = "";
-        this.inp.value = "";
-        this.checks.innerHTML = "";
-        this.openNoteAdder();
-    }
-}
-class CheckList extends Modal {
-    constructor() {
-        super();
-    }
-    addCheckList(input) {
-        this.checks.innerHTML += `<input id="${input}" type="checkbox"> <label id="${input}">${input}</label><br>`;
-    }
-}
-class Header {
-    constructor() {
-        this.templateElement = document.getElementById("tmp-note-container-header");
-        this.hostElement = document.getElementById("app");
+    constructor(templateElementId, hostElementId) {
+        this.templateElement = document.getElementById(templateElementId);
+        this.hostElement = document.getElementById(hostElementId);
         const importedNode = document.importNode(this.templateElement.content, true);
         this.element = importedNode.firstElementChild;
+    }
+    setElementData(title, content, date) {
+        this.element.querySelector("#content").textContent = content;
+        this.element.querySelector("#header").textContent = title;
+        this.element.querySelector("#date").textContent = date;
         this.attach();
     }
     attach() {
         this.hostElement.insertAdjacentElement("afterbegin", this.element);
     }
 }
-const noteHeader = new Header();
-const checkList = new CheckList();
-const noteState = new NoteState();
-const notOperations = new NoteOperations();
+const header = new Header();
+const noteOperations = new NoteOperations();

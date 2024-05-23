@@ -3,7 +3,7 @@
   padding: 0;
 }
 html {
-  background-color: #e4e4e4;
+  background-color: #c0bfbf;
   font-family: Calibri;
 }
 .header-content {
@@ -117,7 +117,7 @@ textarea {
 }
 
 .SinNote {
-  background-color: white;
+  background-color: rgb(230, 230, 230);
   width: 90%;
   border-radius: 10px;
   padding: 10px;
@@ -146,12 +146,23 @@ textarea {
   border: none;
   outline: none;
   border-radius: 8px;
-  width: 5%;
+  width: 10%;
   align-self: center;
   height: 30px;
   font-size: 1.2rem;
   padding: 5px;
   cursor: pointer;
+}
+
+#modalCancelButton {
+  background-color: rgb(253, 100, 100);
+  width: 150px;
+  height: 50px;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  margin-top: 30px;
 }
 
 .checklistAddBtn {
