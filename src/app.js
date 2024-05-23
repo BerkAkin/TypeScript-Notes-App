@@ -109,3 +109,4 @@ class NoteItem {
 }
 const header = new Header();
 const noteOperations = new NoteOperations();
+//TODO: CHECKLIST ADDITION TO NOTES
