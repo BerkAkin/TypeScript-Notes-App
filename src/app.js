@@ -48,7 +48,7 @@ class Header extends Component {
         const title = this.noteTitleInput.value;
         this.addNewNote(content, title);
     }
-    addNewNote(content, title) {
+    addNewNote(content, title, id) {
         const newDate = new Date().toISOString().slice(0, 10).split("-").reverse().join("/");
         noteOperations.noteAdder(Math.random(), content, newDate, title);
     }
@@ -75,14 +75,17 @@ class NoteOperations {
         this.renderNotes();
     }
     deleteNote(id) {
-        //const filtered = noteState.notes.filter((note) => note.id !== id);
+        const filtered = this.notes.filter((note) => note.id !== id);
+        this.notes = filtered;
+        this.saveToLocalStorage();
+        this.renderNotes();
     }
     renderNotes() {
         const hostElement = document.getElementById("note-container");
         hostElement.innerHTML = "";
         for (let oneNote of this.notes) {
             let newNoteItem = new NoteItem("single-note", "note-container");
-            newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date);
+            newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date, oneNote.id);
         }
     }
 }
@@ -93,10 +96,11 @@ class NoteItem {
         const importedNode = document.importNode(this.templateElement.content, true);
         this.element = importedNode.firstElementChild;
     }
-    setElementData(title, content, date) {
+    setElementData(title, content, date, id) {
         this.element.querySelector("#content").textContent = content;
         this.element.querySelector("#header").textContent = title;
         this.element.querySelector("#date").textContent = date;
+        this.element.querySelector("#deleteBtn").addEventListener("click", () => noteOperations.deleteNote(id));
         this.attach();
     }
     attach() {
