@@ -71,7 +71,7 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
 class NoteOperations {
   notes: Note[] = [];
   constructor() {
-    //this.loadFromLocalStorage();
+    this.loadFromLocalStorage();
   }
 
   loadFromLocalStorage() {
@@ -79,6 +79,7 @@ class NoteOperations {
     if (savedNotes) {
       this.notes = JSON.parse(savedNotes);
     }
+    this.renderNotes();
   }
 
   saveToLocalStorage() {
@@ -88,7 +89,7 @@ class NoteOperations {
   noteAdder(id: number, content: string, date: string, title: string) {
     const newNote = new Note(id, content, date, title);
     this.notes.push(newNote);
-
+    this.saveToLocalStorage();
     this.renderNotes();
   }
 
@@ -96,8 +97,11 @@ class NoteOperations {
     //const filtered = noteState.notes.filter((note) => note.id !== id);
   }
   renderNotes() {
-    let newNoteItem = new NoteItem("single-note", "note-container");
-    for (let oneNote of noteOperations.notes) {
+    const hostElement = document.getElementById("note-container") as HTMLDivElement;
+    hostElement.innerHTML = "";
+
+    for (let oneNote of this.notes) {
+      let newNoteItem = new NoteItem("single-note", "note-container");
       newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date);
     }
   }

@@ -56,13 +56,14 @@ class Header extends Component {
 class NoteOperations {
     constructor() {
         this.notes = [];
-        //this.loadFromLocalStorage();
+        this.loadFromLocalStorage();
     }
     loadFromLocalStorage() {
         const savedNotes = localStorage.getItem("notes");
         if (savedNotes) {
             this.notes = JSON.parse(savedNotes);
         }
+        this.renderNotes();
     }
     saveToLocalStorage() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
@@ -70,14 +71,17 @@ class NoteOperations {
     noteAdder(id, content, date, title) {
         const newNote = new Note(id, content, date, title);
         this.notes.push(newNote);
+        this.saveToLocalStorage();
         this.renderNotes();
     }
     deleteNote(id) {
         //const filtered = noteState.notes.filter((note) => note.id !== id);
     }
     renderNotes() {
-        let newNoteItem = new NoteItem("single-note", "note-container");
-        for (let oneNote of noteOperations.notes) {
+        const hostElement = document.getElementById("note-container");
+        hostElement.innerHTML = "";
+        for (let oneNote of this.notes) {
+            let newNoteItem = new NoteItem("single-note", "note-container");
             newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date);
         }
     }
