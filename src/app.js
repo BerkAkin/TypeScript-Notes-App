@@ -1,10 +1,11 @@
 "use strict";
 class Note {
-    constructor(id, content, date, title) {
+    constructor(id, content, date, title, checks) {
         this.id = id;
         this.content = content;
         this.date = date;
         this.title = title;
+        this.checks = checks;
     }
 }
 class Component {
@@ -22,6 +23,7 @@ class Component {
 class Header extends Component {
     constructor() {
         super("tmp-note-container-header", "app");
+        this.checkList = [];
         this.configure();
     }
     configure() {
@@ -34,23 +36,38 @@ class Header extends Component {
         this.noteContentInput = document.getElementById("inputFieldTxt");
         this.modalCancelButton = document.querySelector("#modalCancelButton");
         this.modalCancelButton.addEventListener("click", () => this.hideModal());
+        this.checklistBtn = document.querySelector("#modalAddChecklistButton");
+        this.checklistBtn.addEventListener("click", () => {
+            this.addNewCheckItem(prompt());
+        });
+        this.checklistList = document.querySelector("#checkListField");
     }
     showModal() {
         this.modal.style.display = "flex";
     }
     hideModal() {
+        this.checklistList.innerHTML = "";
+        this.checkList = [];
         this.modal.style.display = "none";
     }
     gatherInputs(e) {
         e.preventDefault();
-        console.log();
         const content = this.noteContentInput.value;
         const title = this.noteTitleInput.value;
-        this.addNewNote(content, title);
+        const checks = this.checkList;
+        this.addNewNote(content, title, checks);
     }
-    addNewNote(content, title, id) {
+    addNewNote(content, title, checks) {
         const newDate = new Date().toISOString().slice(0, 10).split("-").reverse().join("/");
-        noteOperations.noteAdder(Math.random(), content, newDate, title);
+        noteOperations.noteAdder(Math.random(), content, newDate, title, checks);
+        this.checkList = [];
+        this.checklistList.innerHTML = "";
+        this.hideModal();
+    }
+    addNewCheckItem(text) {
+        const newCheckElement = `<input type="checkbox" id="${text}" class="${text}" /><label for="${text}">${text}</label><br>`;
+        this.checklistList.innerHTML += newCheckElement;
+        this.checkList.push(text);
     }
 }
 class NoteOperations {
@@ -68,8 +85,8 @@ class NoteOperations {
     saveToLocalStorage() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
     }
-    noteAdder(id, content, date, title) {
-        const newNote = new Note(id, content, date, title);
+    noteAdder(id, content, date, title, checks) {
+        const newNote = new Note(id, content, date, title, checks);
         this.notes.push(newNote);
         this.saveToLocalStorage();
         this.renderNotes();
@@ -85,7 +102,7 @@ class NoteOperations {
         hostElement.innerHTML = "";
         for (let oneNote of this.notes) {
             let newNoteItem = new NoteItem("single-note", "note-container");
-            newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date, oneNote.id);
+            newNoteItem.setElementData(oneNote.title, oneNote.content, oneNote.date, oneNote.id, oneNote.checks);
         }
     }
 }
@@ -96,11 +113,14 @@ class NoteItem {
         const importedNode = document.importNode(this.templateElement.content, true);
         this.element = importedNode.firstElementChild;
     }
-    setElementData(title, content, date, id) {
+    setElementData(title, content, date, id, checks) {
         this.element.querySelector("#content").textContent = content;
         this.element.querySelector("#header").textContent = title;
         this.element.querySelector("#date").textContent = date;
         this.element.querySelector("#deleteBtn").addEventListener("click", () => noteOperations.deleteNote(id));
+        for (let chck in checks) {
+            this.element.querySelector("#checklistInNote").innerHTML += `<input type="checkbox" id="${checks[chck]}" class="${checks[chck]}" /><label for="${checks[chck]}">${checks[chck]}</label><br>`;
+        }
         this.attach();
     }
     attach() {
@@ -109,4 +129,4 @@ class NoteItem {
 }
 const header = new Header();
 const noteOperations = new NoteOperations();
-//TODO: CHECKLIST ADDITION TO NOTES
+//TODO: CHECKLIST ADDITION TO NOTES and adjust modal windows
