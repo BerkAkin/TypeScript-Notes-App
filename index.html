@@ -23,18 +23,25 @@
       </template>
       <div id="modal" class="modal">
         <div id="note" class="note">
-          <form id="addNoteForm">
-            <div>
-              <input id="inputField" class="inputField input" type="text" placeholder="Başlık..." />
-            </div>
-            <div>
-              <textarea id="inputFieldTxt" class="inputField" rows="7" placeholder="Not..."></textarea>
-            </div>
-            <div class="addbtnModalContainer">
-              <button type="submit" id="modalAddNewNoteButton" class="createNoteModal">Not Oluştur</button>
-              <button type="reset" id="modalCancelButton" class="iptalBtn">İptal</button>
-            </div>
-          </form>
+          <div>
+            <button id="modalAddChecklistButton" class="modalAddChecklistButton">Checklist</button>
+          </div>
+          <div>
+            <form id="addNoteForm">
+              <div>
+                <input id="inputField" class="inputField input" type="text" placeholder="Başlık..." />
+              </div>
+              <div>
+                <textarea id="inputFieldTxt" class="inputField" rows="4" placeholder="Not..."></textarea>
+              </div>
+              <div class="checkListField" id="checkListField"></div>
+              <hr />
+              <div class="addbtnModalContainer">
+                <button type="submit" id="modalAddNewNoteButton" class="createNoteModal">Oluştur</button>
+                <button type="reset" id="modalCancelButton" class="iptalBtn">İptal</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
       <template id="single-note">
@@ -44,7 +51,7 @@
             <button id="deleteBtn">Sil</button>
           </div>
           <p id="content"></p>
-          <ul id="checklist"></ul>
+          <div id="checklistInNote"></div>
           <div class="dateContainer">
             <p id="date"></p>
           </div>
