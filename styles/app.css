@@ -6,6 +6,8 @@ html {
   background-color: #cccccc;
   font-family: Calibri;
 }
+
+/* HEADER */
 .header-content {
   width: 100%;
   display: flex;
@@ -21,6 +23,7 @@ html {
   justify-content: space-evenly;
 }
 
+/* SingleNot */
 #header {
   margin-top: 2px;
   padding-left: 5px;
@@ -35,6 +38,8 @@ html {
   font-size: 1.5rem;
   color: #5a5a5a;
 }
+
+/* Add new Button */
 .btn-container {
   position: fixed;
   bottom: 0;
@@ -52,9 +57,9 @@ html {
   cursor: pointer;
 }
 
+/* Inputs */
 .inputField {
   border: none;
-
   width: 100%;
 }
 .input {
@@ -72,9 +77,10 @@ textarea {
   font-size: 1.4rem;
 }
 
+/* Modal içindeki Note Paneli */
 .note {
   width: 40%;
-  height: 350px;
+  height: 390px;
   border-radius: 5px;
   margin-left: 50px;
   margin-right: 50px;
@@ -83,6 +89,7 @@ textarea {
   background-color: #ffffff;
 }
 
+/* Modal gölge  */
 .modal {
   background-color: rgba(80, 80, 80, 0.486);
   z-index: 99;
@@ -92,12 +99,16 @@ textarea {
   width: 100vw;
   height: 100vh;
 }
+
+/* Modal buton konteyner */
 .addbtnModalContainer {
   display: flex;
   justify-content: end;
   align-items: center;
 }
-.createNoteModal {
+
+/* Modal Butonlar */
+.createNoteModalButton {
   width: 100px;
   height: 50px;
   font-size: 1.3rem;
@@ -106,51 +117,6 @@ textarea {
   background-color: rgb(48, 179, 48);
   color: white;
   margin-top: 10px;
-  cursor: pointer;
-}
-
-#note-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.SinNote {
-  background-color: rgb(230, 230, 230);
-  width: 90%;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-  margin-top: 25px;
-  word-wrap: break-word;
-}
-#app {
-  position: sticky;
-  top: 0;
-}
-
-.dateContainer {
-  justify-content: end;
-  display: flex;
-}
-
-#deleteBtnContainer {
-  display: flex;
-  justify-content: end;
-}
-
-#deleteBtn {
-  background-color: rgb(253, 100, 100);
-  color: white;
-  border: none;
-  outline: none;
-  border-radius: 8px;
-  width: 10%;
-  align-self: center;
-  height: 30px;
-  font-size: 1.2rem;
-  padding: 5px;
   cursor: pointer;
 }
 
@@ -179,11 +145,121 @@ textarea {
   cursor: pointer;
 }
 
+/* NOT RENDER KONTEYNER */
+#note-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TEK BİR NOT NESNESİ  */
+.SinNote {
+  background-color: rgb(230, 230, 230);
+  width: 90%;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 25px;
+  word-wrap: break-word;
+}
+.dateContainer {
+  justify-content: end;
+  display: flex;
+}
+
+#deleteBtnContainer {
+  display: flex;
+  justify-content: end;
+}
+
+#deleteBtn {
+  background-color: rgb(253, 100, 100);
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  width: 10%;
+  align-self: center;
+  height: 30px;
+  font-size: 1.2rem;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* TÜM UYGULAMANIN RENDER KONTEYNER */
+#app {
+  position: sticky;
+  top: 0;
+}
+
+/* Checklist Ekleme Modal ve Alanları */
 .checkListField {
   width: 100%;
   height: 100px;
   overflow: auto;
 }
 
+.checkAdderModal {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: #ffffff;
+  width: 30%;
+  height: 120px;
+  border-radius: 5px;
+}
+/* Modal gölge  */
+.checkListAdderModal {
+  background-color: rgba(80, 80, 80, 0.486);
+  z-index: 100;
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.checkAdderModalInput {
+  outline: none;
+  color: #5a5a5a;
+  text-indent: 0.2rem;
+  width: 99%;
+  margin-top: 15px;
+  height: 1.2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 1px solid gray;
+}
+.checklistModalAddButton {
+  border: none;
+  background-color: rgb(48, 179, 48);
+  color: #ffffff;
+  width: 80px;
+  height: 30px;
+  margin-right: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.checklistModalCancelButton {
+  border: 1px solid rgb(253, 100, 100);
+  color: rgb(253, 100, 100);
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.checklistModalButtonContainer {
+  justify-content: end;
+  display: flex;
+  margin-top: 15px;
+}
+.checkAdderModal,
+h2 {
+  padding: 5px;
+  font-weight: 500;
+}
 .checklistItem {
 }

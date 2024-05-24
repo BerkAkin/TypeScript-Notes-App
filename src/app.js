@@ -36,9 +36,18 @@ class Header extends Component {
         this.noteContentInput = document.getElementById("inputFieldTxt");
         this.modalCancelButton = document.querySelector("#modalCancelButton");
         this.modalCancelButton.addEventListener("click", () => this.hideModal());
+        this.checklistModal = document.querySelector("#checkListAdderModal");
+        this.checklistModalCancelBtn = document.querySelector("#checklistModalCancelButton");
+        this.checklistModalCancelBtn.addEventListener("click", () => {
+            this.hideCheckModal();
+        });
+        this.checklistModalAddBtn = document.querySelector("#checklistModalAddButton");
+        this.checklistModalAddBtn.addEventListener("click", () => {
+            this.gatherCheckModalInputs();
+        });
         this.checklistBtn = document.querySelector("#modalAddChecklistButton");
         this.checklistBtn.addEventListener("click", () => {
-            this.addNewCheckItem(prompt());
+            this.showCheckModal();
         });
         this.checklistList = document.querySelector("#checkListField");
     }
@@ -68,6 +77,17 @@ class Header extends Component {
         const newCheckElement = `<input type="checkbox" id="${text}" class="${text}" /><label for="${text}">${text}</label><br>`;
         this.checklistList.innerHTML += newCheckElement;
         this.checkList.push(text);
+    }
+    showCheckModal() {
+        this.hideModal();
+        this.checklistModal.style.display = "flex";
+    }
+    hideCheckModal() {
+        this.checklistModal.style.display = "none";
+        this.showModal();
+    }
+    gatherCheckModalInputs() {
+        this.hideCheckModal();
     }
 }
 class NoteOperations {

@@ -34,6 +34,10 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
   checklistList: HTMLDivElement;
   checkList: string[] = [];
 
+  checklistModal: HTMLDivElement;
+  checklistModalAddBtn: HTMLButtonElement;
+  checklistModalCancelBtn: HTMLButtonElement;
+
   constructor() {
     super("tmp-note-container-header", "app");
     this.configure();
@@ -54,9 +58,19 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
     this.modalCancelButton = document.querySelector("#modalCancelButton")! as HTMLButtonElement;
     this.modalCancelButton.addEventListener("click", () => this.hideModal());
 
+    this.checklistModal = document.querySelector("#checkListAdderModal")! as HTMLDivElement;
+    this.checklistModalCancelBtn = document.querySelector("#checklistModalCancelButton")! as HTMLButtonElement;
+    this.checklistModalCancelBtn.addEventListener("click", () => {
+      this.hideCheckModal();
+    });
+    this.checklistModalAddBtn = document.querySelector("#checklistModalAddButton")! as HTMLButtonElement;
+    this.checklistModalAddBtn.addEventListener("click", () => {
+      this.gatherCheckModalInputs();
+    });
+
     this.checklistBtn = document.querySelector("#modalAddChecklistButton")! as HTMLButtonElement;
     this.checklistBtn.addEventListener("click", () => {
-      this.addNewCheckItem(prompt()!);
+      this.showCheckModal();
     });
 
     this.checklistList = document.querySelector("#checkListField")! as HTMLDivElement;
@@ -87,6 +101,18 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
     const newCheckElement = `<input type="checkbox" id="${text}" class="${text}" /><label for="${text}">${text}</label><br>`;
     this.checklistList.innerHTML += newCheckElement;
     this.checkList.push(text);
+  }
+  showCheckModal() {
+    this.hideModal();
+    this.checklistModal.style.display = "flex";
+  }
+  hideCheckModal() {
+    this.checklistModal.style.display = "none";
+    this.showModal();
+  }
+
+  gatherCheckModalInputs() {
+    this.hideCheckModal();
   }
 }
 

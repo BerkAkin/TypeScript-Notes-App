@@ -23,6 +23,7 @@
       </template>
       <div id="modal" class="modal">
         <div id="note" class="note">
+          <h2>Yeni Not</h2>
           <div>
             <button id="modalAddChecklistButton" class="modalAddChecklistButton">Checklist</button>
           </div>
@@ -37,13 +38,31 @@
               <div class="checkListField" id="checkListField"></div>
               <hr />
               <div class="addbtnModalContainer">
-                <button type="submit" id="modalAddNewNoteButton" class="createNoteModal">Oluştur</button>
+                <button type="submit" id="modalAddNewNoteButton" class="createNoteModalButton">Oluştur</button>
                 <button type="reset" id="modalCancelButton" class="iptalBtn">İptal</button>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      <div id="checkListAdderModal" class="checkListAdderModal">
+        <div id="checkAdderModal" class="checkAdderModal">
+          <div>
+            <h2>Liste Öğesi</h2>
+          </div>
+          <div>
+            <form id="checkListAdderForm">
+              <input id="checkAdderModalInput" class="checkAdderModalInput" />
+            </form>
+          </div>
+          <div class="checklistModalButtonContainer" id="checklistModalButtonContainer">
+            <button type="submit" id="checklistModalAddButton" class="checklistModalAddButton">Ekle</button>
+            <button type="reset" id="checklistModalCancelButton" class="checklistModalCancelButton">İptal</button>
+          </div>
+        </div>
+      </div>
+
       <template id="single-note">
         <div class="SinNote">
           <div id="deleteBtnContainer">
