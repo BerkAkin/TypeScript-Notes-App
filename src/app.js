@@ -36,9 +36,11 @@ class Header extends Component {
         this.noteContentInput = document.getElementById("inputFieldTxt");
         this.modalCancelButton = document.querySelector("#modalCancelButton");
         this.modalCancelButton.addEventListener("click", () => this.hideModal());
+        this.checklistModalInput = document.querySelector("#checkAdderModalInput");
         this.checklistModal = document.querySelector("#checkListAdderModal");
         this.checklistModalCancelBtn = document.querySelector("#checklistModalCancelButton");
         this.checklistModalCancelBtn.addEventListener("click", () => {
+            this.checklistModalInput.value = "";
             this.hideCheckModal();
         });
         this.checklistModalAddBtn = document.querySelector("#checklistModalAddButton");
@@ -87,6 +89,7 @@ class Header extends Component {
         this.showModal();
     }
     gatherCheckModalInputs() {
+        this.checkList.push(this.checklistModalInput.value);
         this.hideCheckModal();
     }
 }

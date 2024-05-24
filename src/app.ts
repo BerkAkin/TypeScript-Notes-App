@@ -37,6 +37,7 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
   checklistModal: HTMLDivElement;
   checklistModalAddBtn: HTMLButtonElement;
   checklistModalCancelBtn: HTMLButtonElement;
+  checklistModalInput: HTMLInputElement;
 
   constructor() {
     super("tmp-note-container-header", "app");
@@ -58,9 +59,12 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
     this.modalCancelButton = document.querySelector("#modalCancelButton")! as HTMLButtonElement;
     this.modalCancelButton.addEventListener("click", () => this.hideModal());
 
+    this.checklistModalInput = document.querySelector("#checkAdderModalInput")! as HTMLInputElement;
+
     this.checklistModal = document.querySelector("#checkListAdderModal")! as HTMLDivElement;
     this.checklistModalCancelBtn = document.querySelector("#checklistModalCancelButton")! as HTMLButtonElement;
     this.checklistModalCancelBtn.addEventListener("click", () => {
+      this.checklistModalInput.value = "";
       this.hideCheckModal();
     });
     this.checklistModalAddBtn = document.querySelector("#checklistModalAddButton")! as HTMLButtonElement;
@@ -110,8 +114,8 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
     this.checklistModal.style.display = "none";
     this.showModal();
   }
-
   gatherCheckModalInputs() {
+    this.checkList.push(this.checklistModalInput.value);
     this.hideCheckModal();
   }
 }
