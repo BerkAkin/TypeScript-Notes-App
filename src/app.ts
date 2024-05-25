@@ -104,10 +104,8 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
   addNewCheckItem(text: string) {
     const newCheckElement = `<input type="checkbox" id="${text}" class="${text}" /><label for="${text}">${text}</label><br>`;
     this.checklistList.innerHTML += newCheckElement;
-    this.checkList.push(text);
   }
   showCheckModal() {
-    this.hideModal();
     this.checklistModal.style.display = "flex";
   }
   hideCheckModal() {
@@ -116,7 +114,9 @@ class Header extends Component<HTMLDivElement, HTMLDivElement> {
   }
   gatherCheckModalInputs() {
     this.checkList.push(this.checklistModalInput.value);
+    this.addNewCheckItem(this.checklistModalInput.value);
     this.hideCheckModal();
+    console.log(this.checkList);
   }
 }
 
@@ -180,10 +180,14 @@ class NoteItem {
     this.element.querySelector("#header")!.textContent = title;
     this.element.querySelector("#date")!.textContent = date;
     this.element.querySelector("#deleteBtn")!.addEventListener("click", () => noteOperations.deleteNote(id));
+    if (checks.length !== 0) {
+      this.element.querySelector("#content")!.innerHTML += `<hr style="margin-top:15px">`;
+      console.log(checks);
+    }
     for (let chck in checks) {
-      this.element.querySelector(
-        "#checklistInNote"
-      )!.innerHTML += `<input type="checkbox" id="${checks[chck]}" class="${checks[chck]}" /><label for="${checks[chck]}">${checks[chck]}</label><br>`;
+      this.element.querySelector("#checklistInNote")!.innerHTML += `
+      <input type="checkbox" id="${checks[chck]}" class="${checks[chck]}" />
+      <p style="display:inline;" for="${checks[chck]}">${checks[chck]}</p><br>`;
     }
 
     this.attach();
@@ -196,5 +200,3 @@ class NoteItem {
 
 const header = new Header();
 const noteOperations = new NoteOperations();
-
-//TODO: CHECKLIST ADDITION TO NOTES and adjust modal windows
