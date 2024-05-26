@@ -3,7 +3,7 @@
   padding: 0;
 }
 html {
-  background-color: #cccccc;
+  background-color: #ececec;
   font-family: Calibri;
 }
 
@@ -155,7 +155,7 @@ textarea {
 
 /* TEK BİR NOT NESNESİ  */
 .SinNote {
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(255, 255, 255);
   width: 90%;
   border-radius: 10px;
   padding: 10px;
