@@ -1,4 +1,4 @@
-import { noteOperations } from "../Components/NoteOperations.js";
+import { noteOperations } from "../Components/NoteOperations";
 
 export default class NoteItem {
   templateElement: HTMLTemplateElement;

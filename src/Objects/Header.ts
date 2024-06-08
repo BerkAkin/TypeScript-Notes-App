@@ -1,5 +1,5 @@
-import { noteOperations } from "../Components/NoteOperations.js";
-import Component from "../Components/Component.js";
+import { noteOperations } from "../Components/NoteOperations";
+import Component from "../Components/Component";
 
 export default class Header extends Component<HTMLDivElement, HTMLDivElement> {
   showModalBtn: HTMLButtonElement;

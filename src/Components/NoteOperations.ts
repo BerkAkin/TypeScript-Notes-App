@@ -1,5 +1,5 @@
-import Note from "../Objects/Note.js";
-import NoteItem from "../Objects/NoteItem.js";
+import Note from "../Objects/Note";
+import NoteItem from "../Objects/NoteItem";
 
 export default class NoteOperations {
   notes: Note[] = [];
