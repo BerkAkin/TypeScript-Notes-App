@@ -3,3 +3,5 @@ import { header } from "./Objects/Header";
 
 const headerComponent = header;
 const noteOperationsInstance = noteOperations;
+
+console.log("aa");
